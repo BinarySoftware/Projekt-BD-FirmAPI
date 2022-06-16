@@ -19,21 +19,21 @@ namespace ProjektSwagger.Controllers {
 
         // GET: api/Employees
         [HttpGet]
-        public async Task<IEnumerable<Employee>> GetEmployee() {
+        public async Task<IEnumerable<string>> GetEmployee() {
             IEnumerable<Employee> ex = from x in _context.Employees select x;
-            return ex;
+            return ex.ToList().Select(x => x.ToString());
         }
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id) {
+        public async Task<ActionResult<string>> GetEmployee(int id) {
             var employee = await _context.Employees.FindAsync(id);
 
             if (employee == null) {
                 return NotFound();
             }
 
-            return employee;
+            return employee.ToString();
         }
 
         // PUT: api/Employees/5

@@ -41,6 +41,10 @@ namespace ProjektSwagger.Models {
         public string NodeReadable() {
             return this.Hierarchy.ToString();
         }
+
+        override public string ToString() {
+            return "(" + Id + ") " + Name + " " + Surname + ", " + Wage + " Zl. [" + NodeReadable() + "]";
+        }
     }
 
 }
