@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using ProjektSwagger.Models;
 using System.Data.Entity;
 
@@ -23,12 +22,6 @@ namespace ProjektSwagger {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-
-            //var ConnectionString = Configuration.GetConnectionString("FirmDatabase");
-            //services.AddDbContext<MyContext>(options =>
-            //    options.UseSqlServer(ConnectionString)
-            //);
-
             services.AddScoped(provider => new EmployeeContext());
 
             services.AddControllers();

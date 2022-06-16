@@ -41,7 +41,7 @@ namespace ProjektSwagger.Controllers {
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmployee(int id, Employee employee) {
-            if (id != employee.EmployeeId) {
+            if (id != employee.Id) {
                 return BadRequest();
             }
 
@@ -68,7 +68,7 @@ namespace ProjektSwagger.Controllers {
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmployee", new { id = employee.EmployeeId }, employee);
+            return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
         }
 
         // DELETE: api/Employees/5
@@ -86,7 +86,7 @@ namespace ProjektSwagger.Controllers {
         }
 
         private bool EmployeeExists(int id) {
-            return _context.Employees.Any(e => e.EmployeeId == id);
+            return _context.Employees.Any(e => e.Id == id);
         }
     }
 }

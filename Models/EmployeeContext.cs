@@ -15,13 +15,13 @@ namespace ProjektSwagger.Models {
             context.Database.ExecuteSqlCommand(
                 "ALTER TABLE [dbo].[Employees]  WITH CHECK ADD CONSTRAINT [EmployeeManagerNodeNodeFK] " +
                 "FOREIGN KEY([ManagerNode]) REFERENCES [dbo].[Employees] ([Node])");
-            context.Employees.Add(new Employee { Name = "Root", Node = new HierarchyId("/") });
-            context.Employees.Add(new Employee { Name = "Emp1", Node = new HierarchyId("/1/") });
-            context.Employees.Add(new Employee { Name = "Emp2", Node = new HierarchyId("/2/") });
-            context.Employees.Add(new Employee { Name = "Emp3", Node = new HierarchyId("/1/1/") });
-            context.Employees.Add(new Employee { Name = "Emp4", Node = new HierarchyId("/1/1/1/") });
-            context.Employees.Add(new Employee { Name = "Emp5", Node = new HierarchyId("/2/1/") });
-            context.Employees.Add(new Employee { Name = "Emp6", Node = new HierarchyId("/1/2/") });
+            context.Employees.Add(new Employee { Name = "Root", Hierarchy = new HierarchyId("/") });
+            context.Employees.Add(new Employee { Name = "Emp1", Hierarchy = new HierarchyId("/1/") });
+            context.Employees.Add(new Employee { Name = "Emp2", Hierarchy = new HierarchyId("/2/") });
+            context.Employees.Add(new Employee { Name = "Emp3", Hierarchy = new HierarchyId("/1/1/") });
+            context.Employees.Add(new Employee { Name = "Emp4", Hierarchy = new HierarchyId("/1/1/1/") });
+            context.Employees.Add(new Employee { Name = "Emp5", Hierarchy = new HierarchyId("/2/1/") });
+            context.Employees.Add(new Employee { Name = "Emp6", Hierarchy = new HierarchyId("/1/2/") });
             context.SaveChanges();
         }
     }
