@@ -10,6 +10,16 @@ using System.Linq;
 namespace ProjektSwagger.Models {
 
     public class Employee {
+        public Employee() {
+        }
+
+        public Employee(string name, string surname, int wage, string hierarchy) {
+            Name = name;
+            Surname = surname;
+            Hierarchy = new HierarchyId(hierarchy);
+            Wage = wage;
+        }
+
         public int Id { get; set; }
 
         [Required, MaxLength(32)]
@@ -21,7 +31,7 @@ namespace ProjektSwagger.Models {
         [Required]
         public HierarchyId Hierarchy { get; set; }
 
-        [Required, MaxLength(32)]
+        [Required]
         public int Wage { get; set; }
 
         public IQueryable<Employee> GetSubordinates(EmployeeContext context) {

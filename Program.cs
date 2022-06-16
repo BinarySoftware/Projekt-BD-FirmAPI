@@ -9,13 +9,17 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace ProjektSwagger {
     public class Program {
         public static void Main(string[] args) {
+            // Program sam za uzytkownika przygotuje baze danych. Wystarczy kliknac "run".
+            Console.WriteLine("* Initializing DB\t*");
             EmployeeContextInitializer init = new EmployeeContextInitializer();
             EmployeeContext _context = new EmployeeContext();
             init.InitializeDatabase(_context);
 
+            Console.WriteLine("* Opening Swagger\t*");
             // Otwiera Swagger - w nim mo¿na testowaæ dzia³anie aplikacji.
             CreateHostBuilder(args).Build().Run();
         }
