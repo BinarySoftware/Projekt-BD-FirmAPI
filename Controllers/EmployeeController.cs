@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
-using ProjektSwagger.Models;
+using FirmAPI.Models;
 using System.Data.Entity.Hierarchy;
 using System.Web;
 
-namespace ProjektSwagger.Controllers {
+namespace FirmAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase {

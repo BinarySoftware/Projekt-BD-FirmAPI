@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using ProjektSwagger.Models;
+using FirmAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace ProjektSwagger {
+namespace FirmAPI {
     public class Program {
         public static void Main(string[] args) {
             // Program sam za uzytkownika przygotuje baze danych. Wystarczy kliknac "run".

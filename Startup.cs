@@ -9,10 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ProjektSwagger.Models;
+using FirmAPI.Models;
 using System.Data.Entity;
 
-namespace ProjektSwagger {
+namespace FirmAPI {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;

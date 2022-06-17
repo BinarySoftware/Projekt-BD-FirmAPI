@@ -7,7 +7,7 @@ using System.Data.Entity;
 using System.Data.Entity.Hierarchy;
 using System.Linq;
 
-namespace ProjektSwagger.Models {
+namespace FirmAPI.Models {
 
     public class Employee {
         public Employee() {

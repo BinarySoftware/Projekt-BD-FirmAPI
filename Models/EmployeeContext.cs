@@ -5,7 +5,7 @@ using System.Data.Entity.Hierarchy;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjektSwagger.Models {
+namespace FirmAPI.Models {
     public class EmployeeContextInitializer : CreateDatabaseIfNotExists<EmployeeContext> {
         protected override void Seed(EmployeeContext context) {
             Console.WriteLine("*\tAltering DB\t*");
