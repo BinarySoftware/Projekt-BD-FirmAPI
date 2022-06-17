@@ -38,12 +38,19 @@ namespace ProjektSwagger.Models {
             return context.Employees.Where(o => Hierarchy == o.Hierarchy.GetAncestor(1));
         }
 
+        public void Restructuring(EmployeeContext context) {
+            IEnumerable<Employee> subordinates = this.GetSubordinates(context);
+            subordinates.ToList().ForEach(x => x.Restructuring(context));
+            subordinates.ToList().ForEach(x => context.Employees.Remove(x));
+            context.SaveChanges();
+        }
+
         public string NodeReadable() {
             return this.Hierarchy.ToString();
         }
 
         override public string ToString() {
-            return "(" + Id + ") " + Name + " " + Surname + ", " + Wage + " Zl. [" + NodeReadable() + "]";
+            return "(" + Id + ") " + Name + " " + Surname + ", " + Wage + " Zl. [" + NodeReadable() + "] " + "(Glebia: " + this.Hierarchy.GetLevel() + ")";
         }
     }
 

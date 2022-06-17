@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
 using ProjektSwagger.Models;
+using System.Data.Entity.Hierarchy;
+using System.Web;
 
 namespace ProjektSwagger.Controllers {
     [Route("api/[controller]")]
@@ -17,15 +19,17 @@ namespace ProjektSwagger.Controllers {
             _context = context;
         }
 
+        /////////////////////////////////////////////////////////////////////////////
+
         // GET: api/Employees
         [HttpGet]
         public async Task<IEnumerable<string>> GetEmployee() {
-            IEnumerable<Employee> ex = from x in _context.Employees select x;
-            return ex.ToList().Select(x => x.ToString());
+            IEnumerable<Employee> employees = from x in _context.Employees select x;
+            return employees.ToList().Select(x => x.ToString());
         }
 
-        // GET: api/Employees/5
-        [HttpGet("{id}")]
+        // GET: api/Employees/getByID/5
+        [HttpGet("getByID/{id}")]
         public async Task<ActionResult<string>> GetEmployee(int id) {
             var employee = await _context.Employees.FindAsync(id);
 
@@ -36,11 +40,60 @@ namespace ProjektSwagger.Controllers {
             return employee.ToString();
         }
 
+        // GET: api/Employees/getByHierarchy/foo
+        [HttpGet("getByHierarchy/{hierarchy}")]
+        public async Task<IEnumerable<string>> GetEmployee(string hierarchy) {
+            var parsedHierarchy = HttpUtility.UrlDecode(hierarchy);
+            try {
+                var hierarchyTyped = new HierarchyId(parsedHierarchy);
+                IEnumerable<Employee> employees = from x in _context.Employees
+                                                  where x.Hierarchy == hierarchyTyped
+                                                  select x;
+                return employees.ToList().Select(x => x.ToString());
+            } catch (Exception) {
+                return new List<string> { "Incorrect Hierarchy path provided." };
+            }
+        }
+
+        // GET: api/Employees/getByHierarchy/foo
+        [HttpGet("getSubordinatesByHierarchy/{hierarchy}")]
+        public async Task<IEnumerable<string>> GetEmployeeSubordinates(string hierarchy) {
+            var parsedHierarchy = HttpUtility.UrlDecode(hierarchy);
+            Employee employee = (from x in _context.Employees
+                                 where x.Hierarchy == new HierarchyId(parsedHierarchy)
+                                 select x).FirstOrDefault();
+            IEnumerable<Employee> subordinates = employee.GetSubordinates(_context);
+            return subordinates.ToList().Select(x => x.ToString());
+        }
+
+        // GET: api/Employees/getAverageWage
+        [HttpGet("getAverageWage")]
+        public async Task<int> GetAvgWage() {
+            var avgWage = _context.Database.SqlQuery<int>("EXEC GetAvgWage").FirstOrDefault();
+            return avgWage;
+        }
+
+        // GET: api/Employees/getMaxWage
+        [HttpGet("getMaxWage")]
+        public async Task<int> getMaxWage() {
+            var avgWage = _context.Database.SqlQuery<int>("EXEC getMaxWage").FirstOrDefault();
+            return avgWage;
+        }
+
+        // GET: api/Employees/getMinWage
+        [HttpGet("getMinWage")]
+        public async Task<int> getMinWage() {
+            var avgWage = _context.Database.SqlQuery<int>("EXEC getMinWage").FirstOrDefault();
+            return avgWage;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////
+
         // PUT: api/Employees/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee) {
+        public async Task<IActionResult> PutEmployee(int id, [FromForm] Employee employee) {
             if (id != employee.Id) {
                 return BadRequest();
             }
@@ -64,7 +117,7 @@ namespace ProjektSwagger.Controllers {
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee) {
+        public async Task<ActionResult<Employee>> PostEmployee([FromForm] Employee employee) {
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
@@ -83,6 +136,22 @@ namespace ProjektSwagger.Controllers {
             await _context.SaveChangesAsync();
 
             return employee;
+        }
+
+        // DELETE: api/Employees/5
+        [HttpDelete("restructuring/{hierarchy}")]
+        public async Task<IEnumerable<string>> Restructuring(string hierarchy) {
+            var parsedHierarchy = HttpUtility.UrlDecode(hierarchy);
+            try {
+                var hierarchyTyped = new HierarchyId(parsedHierarchy);
+                Employee employee = (from x in _context.Employees
+                                     where x.Hierarchy == hierarchyTyped
+                                     select x).FirstOrDefault();
+                employee.Restructuring(_context);
+                return new List<string> { "Restructured division {" + parsedHierarchy + "}." };
+            } catch (Exception) {
+                return new List<string> { "Incorrect Hierarchy path provided." };
+            }
         }
 
         private bool EmployeeExists(int id) {

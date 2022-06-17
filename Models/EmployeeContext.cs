@@ -28,7 +28,7 @@ namespace ProjektSwagger.Models {
 
             Console.WriteLine("*\tAdding procedures to DB\t*");
             context.Database.ExecuteSqlCommand(@"
-                CREATE PROCEDURE GetAverageSalary
+                CREATE PROCEDURE GetAvgWage
                 AS BEGIN
                     SELECT AVG(Wage) as Wage 
                     FROM Employees
@@ -36,12 +36,21 @@ namespace ProjektSwagger.Models {
             ");
 
             context.Database.ExecuteSqlCommand(@"
-                CREATE PROCEDURE GetMaxSalary
+                CREATE PROCEDURE getMaxWage
                 AS BEGIN
                     SELECT MAX(Wage) as Wage 
                     FROM Employees
                 END
             ");
+
+            context.Database.ExecuteSqlCommand(@"
+                CREATE PROCEDURE getMinWage
+                AS BEGIN
+                    SELECT MIN(Wage) as Wage 
+                    FROM Employees
+                END
+            ");
+
 
             Console.WriteLine("*\tSaving context\t*");
             context.SaveChanges();
