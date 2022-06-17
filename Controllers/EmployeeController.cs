@@ -93,10 +93,10 @@ namespace ProjektSwagger.Controllers {
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, [FromForm] Employee employee) {
-            if (id != employee.Id) {
-                return BadRequest();
-            }
+        public async Task<IActionResult> PutEmployee(int id, string name, string surname, string hierarchy, int wage) {
+            var parsedHierarchy = HttpUtility.UrlDecode(hierarchy);
+            var employee = new Employee(name, surname, wage, parsedHierarchy);
+            employee.Id = id;
 
             _context.Entry(employee).State = EntityState.Modified;
 
@@ -117,11 +117,13 @@ namespace ProjektSwagger.Controllers {
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee([FromForm] Employee employee) {
-            _context.Employees.Add(employee);
+        public async Task<ActionResult<Employee>> PostEmployee(string name, string surname, string hierarchy, int wage) {
+            var parsedHierarchy = HttpUtility.UrlDecode(hierarchy);
+            var newEmployee = new Employee(name, surname, wage, parsedHierarchy);
+            _context.Employees.Add(newEmployee);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmployee", new { id = employee.Id }, employee);
+            return CreatedAtAction("GetEmployee", new { id = newEmployee.Id }, newEmployee);
         }
 
         // DELETE: api/Employees/5
