@@ -132,8 +132,12 @@ namespace ProjektSwagger.Controllers {
                 return NotFound();
             }
 
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            try {
+                _context.Employees.Remove(employee);
+                await _context.SaveChangesAsync();
+            } catch (Exception) {
+                throw new Exception("Cannot remove employee as It has subordinates. If You need to remove It, restructure It's division first.");
+            }
 
             return employee;
         }
